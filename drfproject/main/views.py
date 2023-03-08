@@ -3,19 +3,22 @@ from rest_framework import generics
 from .serializers import *
 from rest_framework.views import Response
 from django.forms import model_to_dict
-# Create your views here.
+from rest_framework.views import APIView
 
 from .models import  Articles
 
 
 
-class ArticlesAPIView(generics.ListAPIView):
+class ArticlesAPIView(APIView):
     def get(self,request):
-        lst = Articles.objects.all().values()
-        return Response({'posts':list(lst)})
+        w = Articles.objects.all()
+        return Response({'posts':ArticlesSerializer(w,many=True).data})
 
 
     def post(self,request):
+        serializer = ArticlesSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         new_post = Articles.objects.create(
             title  = request.data['title'],
             anons  = request.data['anons'],
@@ -23,7 +26,7 @@ class ArticlesAPIView(generics.ListAPIView):
             categ_id = request.data['categ_id']
         )
 
-        return Response({'post': model_to_dict(new_post)})
+        return Response({'post': ArticlesSerializer(new_post).data})
 
 
 # class ArticlesAPIView(generics.ListAPIView):
