@@ -18,15 +18,27 @@ class ArticlesAPIView(APIView):
     def post(self,request):
         serializer = ArticlesSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        new_post = Articles.objects.create(
-            title  = request.data['title'],
-            anons  = request.data['anons'],
-            main_text = request.data['main_text'],
-            categ_id = request.data['categ_id']
-        )
 
-        return Response({'post': ArticlesSerializer(new_post).data})
+        return Response({'post': serializer.data})
+
+
+    def put(self,request, *args,**kwargs):
+        pk = kwargs.get('pk',None)
+        if not pk:
+            return Response({'error':'Method PUT not allowed'})
+        
+        try:
+            instance = Articles.objects.get(pk=pk)
+        
+        except:
+            return Response({'error':'Object does not exists'})
+
+        serializer = ArticlesSerializer(data=request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'post':serializer.data})
 
 
 # class ArticlesAPIView(generics.ListAPIView):
