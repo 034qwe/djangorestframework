@@ -7,8 +7,12 @@ from rest_framework.views import APIView
 
 from .models import  Articles
 
+class ArticlesApiList(generics.ListCreateAPIView):
+    queryset = Articles.objects.all()
+    serializer_class = ArticlesSerializer
 
 
+#not work
 class ArticlesAPIView(APIView):
     def get(self,request):
         w = Articles.objects.all()
@@ -41,6 +45,3 @@ class ArticlesAPIView(APIView):
         return Response({'post':serializer.data})
 
 
-# class ArticlesAPIView(generics.ListAPIView):
-#     queryset = Articles.objects.all()
-#     serializer_class = ArticlesSerializers
