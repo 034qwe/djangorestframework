@@ -12,36 +12,48 @@ class ArticlesApiList(generics.ListCreateAPIView):
     serializer_class = ArticlesSerializer
 
 
-#not work
-class ArticlesAPIView(APIView):
-    def get(self,request):
-        w = Articles.objects.all()
-        return Response({'posts':ArticlesSerializer(w,many=True).data})
+
+class ArticlesAPIUpdate(generics.UpdateAPIView):
+    queryset = Articles.objects.all()
+    serializer_class = ArticlesSerializer
 
 
-    def post(self,request):
-        serializer = ArticlesSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+class ArticlesAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Articles.objects.all()
+    serializer_class = ArticlesSerializer
 
 
-        return Response({'post': serializer.data})
 
 
-    def put(self,request, *args,**kwargs):
-        pk = kwargs.get('pk',None)
-        if not pk:
-            return Response({'error':'Method PUT not allowed'})
+# class ArticlesAPIView(APIView):
+#     def get(self,request):
+#         w = Articles.objects.all()
+#         return Response({'posts':ArticlesSerializer(w,many=True).data})
+
+
+#     def post(self,request):
+#         serializer = ArticlesSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+
+
+#         return Response({'post': serializer.data})
+
+
+#     def put(self,request, *args,**kwargs):
+#         pk = kwargs.get('pk',None)
+#         if not pk:
+#             return Response({'error':'Method PUT not allowed'})
         
-        try:
-            instance = Articles.objects.get(pk=pk)
+#         try:
+#             instance = Articles.objects.get(pk=pk)
         
-        except:
-            return Response({'error':'Object does not exists'})
+#         except:
+#             return Response({'error':'Object does not exists'})
 
-        serializer = ArticlesSerializer(data=request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({'post':serializer.data})
+#         serializer = ArticlesSerializer(data=request.data, instance=instance)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response({'post':serializer.data})
 
 
