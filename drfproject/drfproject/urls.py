@@ -5,6 +5,6 @@ from main.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('articles/', ArticlesAPIView.as_view(), name='articles'),
-    path('articles/<int:pk>/', ArticlesAPIView.as_view(), name='article_detail'),
+    path('articles/', ArticlesApiList.as_view(), name='articles'),
+    path('articles/<int:pk>/', ArticlesApiList.as_view(), name='article_detail'),
 ]
