@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -11,6 +12,7 @@ class Articles(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     categ = models.ForeignKey('Category_Articles',on_delete=models.PROTECT,) #+= _id
     slug = models.SlugField(max_length=255,unique=True,db_index=True, verbose_name="URL")
+    user = models.ForeignKey(User,verbose_name='user',on_delete=models.CASCADE)
 
 
     def get_absolute_url(self):
