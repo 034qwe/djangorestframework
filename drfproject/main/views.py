@@ -4,7 +4,7 @@ from .serializers import *
 from rest_framework.views import Response
 from django.forms import model_to_dict
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser,IsAuthenticated
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -20,7 +20,7 @@ class ArticlesApiList(generics.ListCreateAPIView):
 class ArticlesAPIUpdate(generics.UpdateAPIView):
     queryset = Articles.objects.all()
     serializer_class = ArticlesSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
 class ArticlesAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Articles.objects.all() 
